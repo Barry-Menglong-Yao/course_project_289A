@@ -47,8 +47,15 @@ python data/circuits_data_generation.py
 1、Generate the multi-choice QA format using predefined templates
 
 ```bash
-python Multichoice data-construct.py --input {A_path_file}  --output {B_path_file}
+python Multichoice-data-construct.py --input {A_path_file}  --output {B_path_file}
 ```
+
+2、Generate the true-false QA format using predefined templates
+
+```bash
+python TrueFlase-data-construct.py --input {A_path_file}  --output {B_path_file}
+```
+
 
 
 ## ✏️Training
