@@ -53,7 +53,7 @@ python Multichoice-data-construct.py --input {A_path_file}  --output {B_path_fil
 2、Generate the true-false QA format using predefined templates
 
 ```bash
-python TrueFlase-data-construct.py --input {A_path_file}  --output {B_path_file}
+python TrueFalse-data-construct.py --input {A_path_file}  --output {B_path_file}
 ```
 
 
