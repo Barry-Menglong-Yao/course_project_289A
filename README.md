@@ -42,6 +42,13 @@ python data/query_data_generation.py
 python data/circuits_data_generation.py
 ```
 
+##QA data construction##
+
+1、Generate the multi-choice QA format using predefined templates
+
+python Multichoice data-construct.py --input {A_path_file}  --output {B_path_file}
+
+
 ## ✏️Training
 
 Run the continual pre-training process with the following command:
