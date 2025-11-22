@@ -103,3 +103,17 @@ CUDA_VISIBLE_DEVICES=0,1 python train.py \
     --report_to wandb
 ```
 
+For RQ4: How does training on multiple knowledge induce interference or synergy across knowledge? Run the following command to obtain the results. You can change the data and output directories based on your own file path.
+
+```bash
+bash train_concept_v4_multi_knowledge.sh
+```
+
+After obtaining the results, you can run visualization to see the impact of how training on multiple knowledge induces interference or synergy across knowledge.
+
+```bash
+python visualize_result.py
+```
+
+
+
