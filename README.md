@@ -42,7 +42,26 @@ python data/query_data_generation.py
 python data/circuits_data_generation.py
 ```
 
-##QA data construction##
+## Specific dataset construction ##
+
+1. Generate a specialized training dataset where one selected high-level knowledge category is always trained before another, while all other categories remain in their original positions.
+
+```bash 
+python generate_knowledge_interference_train.py
+```
+
+2. Generate a test dataset that contains only one selected high-level knowledge category, and write those filtered instances to a new file.
+
+```bash 
+python generate_knowledge_interference_test.py
+```
+
+3. Generate a training dataset by filtering out all non-universal or overly specific statements that may introduce noise or harm the model’s generalization.
+
+```bash 
+python filter.py
+```
+## QA data construction ##
 
 1、Generate the multi-choice QA format using predefined templates
 
