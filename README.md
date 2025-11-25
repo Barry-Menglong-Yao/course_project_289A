@@ -122,6 +122,107 @@ CUDA_VISIBLE_DEVICES=0,1 python train.py \
     --report_to wandb
 ```
 
+
+## 🔍Circuit-Discovery
+
+Run the circuit discovery process with the following command:
+
+```bash
+bash scripts/$model/eap.sh
+```
+> Note: Remember to change `$model` in the script to the name model you want to train, such as `gpt2`, `gpt2-medium`, etc.
+
+Example script for discovering knowledge circuits in GPT-2 small model:
+
+```bash
+model=gpt2
+directory_path=outputs/train/gpt2/2024-12-19-22-27-33/checkpoints  # Change this to the path of the directory where the checkpoints are saved
+circuit_n=300
+
+for task in "city" "company" "major"; do
+    data_file=data/entities_50000/circuit_${circuit_n}/${model}/${task}.jsonl
+    for dirname in "$directory_path"/checkpoint-*/; do
+        model_path="$dirname"
+        for type in "new" "revised"; do
+            for frequency in "high" "medium" "low"; do
+                CUDA_VISIBLE_DEVICES=0 python circuit_discovery.py \
+                    --model $model \
+                    --model_path $model_path \
+                    --task $task \
+                    --data_file $data_file \
+                    --type $type \
+                    --frequency $frequency \
+                    --batch_size 64 \
+                    --method "EAP-IG"
+            done
+        done
+    done
+done
+```
+
+## 🤔Circuit-Evaluation
+
+Run the circuit evaluation process with the following command:
+
+```bash
+bash scripts/$model/circuit_eval.sh
+```
+> Note: Remember to change `$model` in the script to the name model you want to train, such as `gpt2`, `gpt2-medium`, etc.
+
+Example script for evaluate knowledge circuits in GPT-2 small model:
+
+```bash
+model=gpt2
+directory_path=outputs/train/gpt2/2024-12-19-22-27-33/checkpoints  # Change this to the path of the directory where the checkpoints are saved
+circuit_n=300
+
+test_data_file=data/entities_50000/test.jsonl
+
+for task in "city" "company" "major"; do
+    eval_data_file=data/entities_50000/circuit_${circuit_n}/${model}/${task}.jsonl
+    for dirname in "$directory_path"/checkpoint-*/; do
+        model_path="$dirname"
+        for source_type in "new" "revised"; do
+            for source_frequency in "high" "medium" "low"; do
+                target_type=$source_type
+                for target_frequency in "high" "medium" "low"; do
+                    CUDA_VISIBLE_DEVICES=0 python circuit_eval.py \
+                        --model $model \
+                        --model_path $model_path \
+                        --task $task \
+                        --eval_data_file $eval_data_file \
+                        --test_data_file $test_data_file \
+                        --source_type $source_type \
+                        --source_frequency $source_frequency \
+                        --target_type $target_type \
+                        --target_frequency $target_frequency \
+                        --batch_size 64 \
+                        --method "EAP-IG" \
+                        --topn 8000   # Change this to the number of edges that retained in the circuit
+                done
+            done
+        done
+    done
+done
+```
+
+
+
+For RQ1: How do LLMs’ internal mechanisms correlate with the difficulty of acquiring different concepts?
+```bash
+bash scripts/gpt2/train_concept_v5_one_knowledge_per_relation_mcqa.sh
+```
+
+For RQ2: How do LLMs’ internal mechanisms correlate with the propensity to forget learned concepts?
+```bash
+bash scripts/gpt2/train_concept_v5_one_knowledge_per_relation_mcqa.sh
+```
+
+For RQ3: How does training on multiple concepts induce interference or synergy across concepts?
+```bash
+bash scripts/gpt2/train_concept_interference_groups.sh
+```
+
 For RQ4: How does training on multiple knowledge induce interference or synergy across knowledge? Run the following command to obtain the results. You can change the data and output directories based on your own file path.
 
 ```bash
