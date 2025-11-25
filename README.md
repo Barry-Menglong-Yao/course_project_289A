@@ -16,8 +16,6 @@
 ## 🔧Installation
 
 ```bash
-git clone https://github.com/zjunlp/DynamicKnowledgeCircuits
-cd DynamicKnowledgeCircuits
 pip install -r requirements.txt
 ```
 
